@@ -20,7 +20,7 @@ $ pip install --user ansible
 
 2. Clone this repository
 ```bash
-$ git clone https://github.com/alessonviana/Worksation_Ubuntu.git
+$ git clone https://github.com/alessonviana/Workstation_MacOs.git
 ```
 
 3. Apply the configuration
