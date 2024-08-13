@@ -1,0 +1,245 @@
+---
+
+- block:
+  - name: Ensure Homebrew is installed
+    command: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    args:
+      creates: /usr/local/bin/brew
+
+  - name: Update Homebrew
+    homebrew:
+      update_homebrew: yes
+
+  - name: Install kubectl using Homebrew
+    homebrew:
+      name: kubectl
+      state: present
+
+  - name: Create kubeconfig directory
+    file:
+      path: ~/.kube
+      state: directory
+      mode: '0755'
+
+  - name: Configure kubeconfig file
+    copy:
+      dest: ~/.kube/config
+      content: |
+        apiVersion: v1
+        clusters:
+        - cluster:
+            server: https://rancher.infrastructure.connectist.com/k8s/clusters/local
+          name: local
+        - cluster:
+            server: https://rancher.infrastructure.connectist.com/k8s/clusters/c-m-wcxklfs2
+          name: prod-cherry-lith-01
+        - cluster:
+            server: https://rancher.infrastructure.connectist.com/k8s/clusters/c-m-fjqjj75k
+          name: prod-cherry-lith-03
+        - cluster:
+            server: https://rancher.infrastructure.connectist.com/k8s/clusters/c-m-gr5sch6n
+          name: prod-cherry-neth-01
+        - cluster:
+            server: https://rancher.infrastructure.connectist.com/k8s/clusters/c-m-2hrknzhm
+          name: prod-cherry-neth-02
+        - cluster:
+            server: https://rancher.infrastructure.connectist.com/k8s/clusters/c-m-6s8cgt4m
+          name: prod-cherry-neth-03
+        - cluster:
+            server: https://rancher.infrastructure.connectist.com/k8s/clusters/c-m-m6stkfmv
+          name: prod-cherry-usa-01
+        - cluster:
+            server: https://rancher.infrastructure.connectist.com/k8s/clusters/c-p7rw2
+          name: prod-mv-eks-01
+        - cluster:
+            server: https://rancher.infrastructure.connectist.com/k8s/clusters/c-m-lc4w6jb9
+          name: prod-ovh-usa-01
+        - cluster:
+            server: https://rancher.infrastructure.connectist.com/k8s/clusters/c-m-rnsf4hd2
+          name: prod-ovh-usa-02
+        - cluster:
+            server: https://rancher.infrastructure.connectist.com/k8s/clusters/c-m-f9thzw8l
+          name: prod-ovh-usa-03
+        - cluster:
+            server: https://rancher.infrastructure.connectist.com/k8s/clusters/c-m-gd8twztz
+          name: prod-ovh-usa-04
+        - cluster:
+            server: https://rancher.infrastructure.connectist.com/k8s/clusters/c-m-hqw22w9x
+          name: prod-ovh-usa-05
+        - cluster:
+            server: https://rancher.infrastructure.connectist.com/k8s/clusters/c-m-xbz4p4x8
+          name: prod-ovh-usa-06
+        - cluster:
+            server: https://rancher.infrastructure.connectist.com/k8s/clusters/c-m-4ckfpp6q
+          name: prod-ovh-usa-08
+        - cluster:
+            server: https://rancher.infrastructure.connectist.com/k8s/clusters/c-m-9xf69lhn
+          name: prod-ovh-usa-09
+        - cluster:
+            server: https://rancher.infrastructure.connectist.com/k8s/clusters/c-m-tttlbrdx
+          name: prod-ovh-usa-10
+        - cluster:
+            server: https://rancher.infrastructure.connectist.com/k8s/clusters/c-m-hm6zj7cx
+          name: prod-ovh-usa-11
+        - cluster:
+            server: https://rancher.infrastructure.connectist.com/k8s/clusters/c-m-8wh8j552
+          name: prod-ovh-usa-12
+        - cluster:
+            server: https://rancher.infrastructure.connectist.com/k8s/clusters/c-m-82wpzh2t
+          name: stag-cherry-usa-01
+        - cluster:
+            server: https://rancher.infrastructure.connectist.com/k8s/clusters/c-lbbhw
+          name: stag-mv-eks-01
+        contexts:
+        - context:
+            cluster: local
+            user: local
+          name: local
+        - context:
+            cluster: prod-cherry-lith-01
+            user: prod-cherry-lith-01
+          name: prod-cherry-lith-01
+        - context:
+            cluster: prod-cherry-lith-03
+            user: prod-cherry-lith-03
+          name: prod-cherry-lith-03
+        - context:
+            cluster: prod-cherry-neth-01
+            user: prod-cherry-neth-01
+          name: prod-cherry-neth-01
+        - context:
+            cluster: prod-cherry-neth-02
+            user: prod-cherry-neth-02
+          name: prod-cherry-neth-02
+        - context:
+            cluster: prod-cherry-neth-03
+            user: prod-cherry-neth-03
+          name: prod-cherry-neth-03
+        - context:
+            cluster: prod-cherry-usa-01
+            user: prod-cherry-usa-01
+          name: prod-cherry-usa-01
+        - context:
+            cluster: prod-mv-eks-01
+            user: prod-mv-eks-01
+          name: prod-mv-eks-01
+        - context:
+            cluster: prod-ovh-usa-01
+            user: prod-ovh-usa-01
+          name: prod-ovh-usa-01
+        - context:
+            cluster: prod-ovh-usa-02
+            user: prod-ovh-usa-02
+          name: prod-ovh-usa-02
+        - context:
+            cluster: prod-ovh-usa-03
+            user: prod-ovh-usa-03
+          name: prod-ovh-usa-03
+        - context:
+            cluster: prod-ovh-usa-04
+            user: prod-ovh-usa-04
+          name: prod-ovh-usa-04
+        - context:
+            cluster: prod-ovh-usa-05
+            user: prod-ovh-usa-05
+          name: prod-ovh-usa-05
+        - context:
+            cluster: prod-ovh-usa-06
+            user: prod-ovh-usa-06
+          name: prod-ovh-usa-06
+        - context:
+            cluster: prod-ovh-usa-08
+            user: prod-ovh-usa-08
+          name: prod-ovh-usa-08
+        - context:
+            cluster: prod-ovh-usa-09
+            user: prod-ovh-usa-09
+          name: prod-ovh-usa-09
+        - context:
+            cluster: prod-ovh-usa-10
+            user: prod-ovh-usa-10
+          name: prod-ovh-usa-10
+        - context:
+            cluster: prod-ovh-usa-11
+            user: prod-ovh-usa-11
+          name: prod-ovh-usa-11
+        - context:
+            cluster: prod-ovh-usa-12
+            user: prod-ovh-usa-12
+          name: prod-ovh-usa-12
+        - context:
+            cluster: stag-cherry-usa-01
+            user: stag-cherry-usa-01
+          name: stag-cherry-usa-01
+        - context:
+            cluster: stag-mv-eks-01
+            user: stag-mv-eks-01
+          name: stag-mv-eks-01
+        current-context: prod-cherry-usa-01
+        kind: Config
+        preferences: {}
+        users:
+        - name: local
+          user:
+            token: kubeconfig-u-scunz3wrrjxpqcc:b854lp59lmbn6lj6vx6ccbszpz9q9zrkbt456684t56cqjwx2jlcnp
+        - name: prod-cherry-lith-01
+          user:
+            token: kubeconfig-u-scunz3wrrj9hr27:xtbjblp5nlsk46qqjzmh4npctbgr7jrc9pvq4bxm5lpp67s9f2qfbk
+        - name: prod-cherry-lith-03
+          user:
+            token: kubeconfig-u-scunz3wrrjbwjxj:2pmpg7wm4svgg97jh4rqn79tsdgjv89jmb4v4xcr8kjwxt7n88t4f7
+        - name: prod-cherry-neth-01
+          user:
+            token: kubeconfig-u-scunz3wrrjx58jh:hn6bpqjsgzrswf2s2xzh69tn6jq65ttr4v9r5qxdklsqw5bftg2nvj
+        - name: prod-cherry-neth-02
+          user:
+            token: kubeconfig-u-scunz3wrrj5fxcb:q9pf9wjx6thzdcdkffmjfdgvjntsjdl4hsv5q5v5bk67464wtl2mqg
+        - name: prod-cherry-neth-03
+          user:
+            token: kubeconfig-u-scunz3wrrjw6586:nrq4blzlfxd8z8ggpp2n8xqk5bmmhrzrf6hfxs4mf9qvrqb6bwbfhn
+        - name: prod-cherry-usa-01
+          user:
+            token: kubeconfig-u-scunz3wrrjrmvcr:lj8n67cf8h5h64pmdvv642cjjkb6ztqnckp2wbdm7kxgnrsjbpsszc
+        - name: prod-mv-eks-01
+          user:
+            token: kubeconfig-u-scunz3wrrjg54z8:8hfgwd2gvlfprg7trv9xlbw72tgrfr4mgcj869kz85ps4fkhsgzkdz
+        - name: prod-ovh-usa-01
+          user:
+            token: kubeconfig-u-scunz3wrrjdn6m2:cwp68frp8wxdq7rthh7rmw2dbc7ckrslfwfgqmkc8j4fnkvwr4l6lq
+        - name: prod-ovh-usa-02
+          user:
+            token: kubeconfig-u-scunz3wrrj5vbzk:vsln52vsfr94wz6h6qbxsxhl8nbcmswcfckj69jtpt8sq2clnclwqz
+        - name: prod-ovh-usa-03
+          user:
+            token: kubeconfig-u-scunz3wrrjfckdh:lmq5jps8l625gct9zwb7kx8h8nwhhdlzpbl2gvt7252jqf7f8hfktc
+        - name: prod-ovh-usa-04
+          user:
+            token: kubeconfig-u-scunz3wrrjkvl9k:tqw7bc6lfn78bflxtb84d6bqfsx9jgwnqvbzndff5knbf5b7fkhzdg
+        - name: prod-ovh-usa-05
+          user:
+            token: kubeconfig-u-scunz3wrrjl6hhl:b7m9bdpzcs7mjtb6b6w4q5859fsksjrj5pw8lsp9d5vzmrdwjhk7jm
+        - name: prod-ovh-usa-06
+          user:
+            token: kubeconfig-u-scunz3wrrjgbbpq:xwtpk4gz5nwwnxgscl5l45b9vp2bgmh4ct5wtrcmklf78gznlxfzbs
+        - name: prod-ovh-usa-08
+          user:
+            token: kubeconfig-u-scunz3wrrj9952w:6ppf86vjjrd4j52xthgtcm6xjr9jt6tw7q24w6k4gdprthlqt5fxzg
+        - name: prod-ovh-usa-09
+          user:
+            token: kubeconfig-u-scunz3wrrjqxg5x:qhpdxxjgz4fbknztfgqlsnr7lggcn8shz9wts9qdtjdtf6bfb22k7f
+        - name: prod-ovh-usa-10
+          user:
+            token: kubeconfig-u-scunz3wrrj7dkrs:8r72cmfwwnm8xw6fvbx67j9qd26cq6hnbqrlxtmtsdks4cqj9c66ws
+        - name: prod-ovh-usa-11
+          user:
+            token: kubeconfig-u-scunz3wrrj2zdwm:fn99xp9gwzm4j2s5f5ttdsznw7lgv8l8ccdjwq9vnf99snp5wrfqwk
+        - name: prod-ovh-usa-12
+          user:
+            token: kubeconfig-u-scunz3wrrjfbqgw:s8xkbdzrqdxxl77ngc8sph6zbkzhtq255pcjsskqnclwng6s9xqgrw
+        - name: stag-cherry-usa-01
+          user:
+            token: kubeconfig-u-scunz3wrrjrqpmd:hjp9dfqr577wdnrwrbrcq86ctvz56blvpfvvtb2zktbhpmz84vw4pb
+        - name: stag-mv-eks-01
+          user:
+            token: kubeconfig-u-scunz3wrrjpsqwn:9ndwzwwq29jn79pmwh6b6rkgvbvbm796cp7cpfchpbfcxfhlx6pbj2
+  tags: kubectl

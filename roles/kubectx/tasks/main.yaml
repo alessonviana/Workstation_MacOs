@@ -1,0 +1,25 @@
+---
+- block:
+  - name: Ensure Homebrew is installed
+    command: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    args:
+      creates: /usr/local/bin/brew
+
+  - name: Update Homebrew
+    homebrew:
+      update_homebrew: yes
+
+  - name: Install kubectx and kubens using Homebrew
+    homebrew:
+      name: kubectx
+      state: present
+
+  - name: Ensure kubectx is installed
+    command: kubectx --help
+    register: kubectx_installed
+
+  - name: Display message if kubectx was installed
+    debug:
+      msg: "kubectx and kubens were installed successfully."
+    when: kubectx_installed is succeeded
+  tags: kubectx

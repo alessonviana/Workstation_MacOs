@@ -1,0 +1,26 @@
+---
+- block:
+  - name: Ensure Homebrew is installed
+    command: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    args:
+      creates: /usr/local/bin/brew
+
+  - name: Update Homebrew
+    homebrew:
+      update_homebrew: yes
+
+  - name: Install Spotify using Homebrew
+    homebrew_cask:
+      name: spotify
+      state: present
+
+  - name: Ensure Spotify is installed
+    stat:
+      path: /Applications/Spotify.app
+    register: spotify_installed
+
+  - name: Display message if Spotify was installed
+    debug:
+      msg: "Spotify was installed successfully."
+    when: spotify_installed.stat.exists
+  tags: spotifi

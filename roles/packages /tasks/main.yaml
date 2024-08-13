@@ -1,0 +1,22 @@
+---
+- block:
+    - name: Install Homebrew
+      command: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+      args:
+        creates: /usr/local/bin/brew
+
+    - name: Installing macOS Apps
+      become: true
+      homebrew:
+        name: '{{ item }}'
+        state: present
+      loop: "{{ brew_packages }}"
+      
+    - name: Installing macOS Cask Apps
+      become: true
+      homebrew_cask:
+        name: '{{ item }}'
+        state: present
+      loop: "{{ cask_packages }}"
+
+  tags: packages

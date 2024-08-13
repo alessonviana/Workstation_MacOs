@@ -1,0 +1,36 @@
+---
+- block:
+  - name: Update macOS software
+    command: softwareupdate -i -a
+    register: macos_update
+    ignore_errors: yes
+
+  - name: Reboot macOS if updates were installed
+    reboot:
+      msg: "Rebooting after macOS updates."
+      pre_reboot_delay: 30
+    when: "'installed' in macos_update.stdout"
+
+  - name: Ensure Homebrew is installed
+    command: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    args:
+      creates: /usr/local/bin/brew
+
+  - name: Update Homebrew
+    homebrew:
+      update_homebrew: yes
+
+  - name: Upgrade all Homebrew packages
+    homebrew:
+      name: "{{ item }}"
+      state: latest
+    loop: "{{ query('homebrew_taps') }}"
+
+  - name: Cleanup old Homebrew packages
+    command: brew cleanup
+    register: cleanup_output
+
+  - name: Display message after cleanup
+    debug:
+      msg: "Homebrew cleanup complete. Output: {{ cleanup_output.stdout }}"
+  tags: update

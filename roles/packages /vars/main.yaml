@@ -1,0 +1,32 @@
+---
+brew_packages:
+  - vim
+  - htop
+  - curl
+  - wget
+  # - ncdu
+  - tree
+  - python3
+  - make
+  - git
+  - bash-completion
+  - zsh
+  - jq
+  - mtr
+  - sqlite3
+  - bat
+  - libarchive
+  # - neofetch
+  # - btop
+  # - httpie
+
+cask_packages:
+  # - flameshot
+  # - font-hack-nerd-font
+  # - tilix
+  - virtualbox
+  # - vlc
+  # - deluge
+  # - insomnia
+  # - telegram-desktop
+  # - antares

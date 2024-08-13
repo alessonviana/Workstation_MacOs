@@ -1,0 +1,24 @@
+---
+- block:
+  - name: Ensure Homebrew is installed
+    command: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    args:
+      creates: /usr/local/bin/brew
+
+  - name: Update Homebrew
+    homebrew:
+      update_homebrew: yes
+
+  - name: Install Terraform using Homebrew
+    homebrew:
+      name: terraform
+      state: present
+
+  - name: Ensure Terraform is installed
+    command: terraform --version
+    register: terraform_version
+
+  - name: Display Terraform version
+    debug:
+      msg: "Terraform version: {{ terraform_version.stdout }}"
+  tags: terraform

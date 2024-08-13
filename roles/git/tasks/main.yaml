@@ -1,0 +1,24 @@
+---
+- block:
+  - name: Ensure Homebrew is installed
+    command: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    args:
+      creates: /usr/local/bin/brew
+
+  - name: Update Homebrew
+    homebrew:
+      update_homebrew: yes
+
+  - name: Install Git using Homebrew
+    homebrew:
+      name: git
+      state: present
+
+  - name: Ensure Git is installed
+    command: git --version
+    register: git_version
+
+  - name: Display Git version
+    debug:
+      msg: "Git version installed: {{ git_version.stdout }}"
+  tags: git

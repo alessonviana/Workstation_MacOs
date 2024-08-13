@@ -1,0 +1,38 @@
+---
+
+- block:
+  - name: Download Docker Desktop for Mac
+    get_url:
+      url: https://desktop.docker.com/mac/stable/Docker.dmg
+      dest: /tmp/Docker.dmg
+
+  - name: Mount the Docker DMG
+    command: hdiutil attach /tmp/Docker.dmg
+    register: dmg_mount_output
+
+  - name: Install Docker Desktop
+    command: cp -R "/Volumes/Docker/Docker.app" /Applications/
+
+  - name: Unmount the Docker DMG
+    command: hdiutil detach "/Volumes/Docker"
+
+  - name: Remove the downloaded Docker DMG file
+    file:
+      path: /tmp/Docker.dmg
+      state: absent
+
+  - name: Ensure Docker Desktop is in the Applications folder
+    stat:
+      path: /Applications/Docker.app
+    register: docker_installed
+
+  - name: Display a message if Docker Desktop was installed
+    debug:
+      msg: "Docker Desktop was installed successfully."
+    when: docker_installed.stat.exists
+
+  - name: Start Docker Desktop for the first time
+    shell: open /Applications/Docker.app
+    async: 0
+    poll: 0
+  tags: docker

@@ -1,0 +1,26 @@
+---
+- block:
+  - name: Ensure Homebrew is installed
+    command: /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    args:
+      creates: /usr/local/bin/brew
+
+  - name: Update Homebrew
+    homebrew:
+      update_homebrew: yes
+
+  - name: Install Visual Studio Code using Homebrew
+    homebrew_cask:
+      name: visual-studio-code
+      state: present
+
+  - name: Ensure Visual Studio Code is installed
+    stat:
+      path: /Applications/Visual\ Studio\ Code.app
+    register: vscode_installed
+
+  - name: Display message if Visual Studio Code was installed
+    debug:
+      msg: "Visual Studio Code was installed successfully."
+    when: vscode_installed.stat.exists
+  tags: vscode
